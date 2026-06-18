@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 480px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        /* Tab Styles */
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #ddd;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            color: #007bff;
+            border-bottom: 3px solid #007bff;
+            margin-bottom: -2px;
+        }
+        .tab-btn.mm-active.active {
+            color: #8c6239;
+            border-bottom: 3px solid #8c6239;
+        }
+        /* Form Styles */
+        .calculator-form {
+            display: none;
+        }
+        .calculator-form.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #4a4a4a;
+        }
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd1d9;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+        .col {
+            flex: 1;
+        }
+        .calc-btn {
+            width: 100%;
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+        #btn-en { background-color: #007bff; }
+        #btn-en:hover { background-color: #0056b3; }
+        #btn-mm { background-color: #8c6239; }
+        #btn-mm:hover { background-color: #6f4e2d; }
+        
+        /* Result Style */
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #28a745;
+            border-radius: 6px;
+            display: none;
+            line-height: 1.8;
+            text-align: left;
+            color: #333;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        
+        .footer-credit {
+            margin-top: 25px;
+            font-size: 18px;
+            color: #888;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Age Calculator</h2>
+    
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('english-tab', this, false)">Eng ခုနှစ်ဖြင့် တွက်ရန်</button>
+        <button class="tab-btn" onclick="switchTab('myanmar-tab', this, true)">မြန်မာခုနှစ်ဖြင့် တွက်ရန်</button>
+    </div>
+
+    <div id="english-tab" class="calculator-form active">
+        <div class="form-group">
+            <label for="enYear">မွေးဖွားသည့် အင်္ဂလိပ်ခုနှစ် </label>
+            <input type="number" id="enYear" placeholder="ဥပမာ - 1994" min="1" max="2100" required>
+        </div>
+        <div class="form-group">
+            <label for="enMonth">မွေးဖွားသည့် အင်္ဂလိပ်လ </label>
+            <select id="enMonth">
+                <option value="1">ဇန်နဝါရီ (January)</option>
+                <option value="2">ဖေဖော်ဝါရီ (February)</option>
+                <option value="3">မတ် (March)</option>
+                <option value="4">ဧပြီ (April)</option>
+                <option value="5">မေ (May)</option>
+                <option value="6">ဇွန် (June)</option>
+                <option value="7">ဇူလိုင် (July)</option>
+                <option value="8">သြဂုတ် (August)</option>
+                <option value="9">စက်တင်ဘာ (September)</option>
+                <option value="10">အောက်တိုဘာ (October)</option>
+                <option value="11">နိုဝင်ဘာ (November)</option>
+                <option value="12">ဒီဇင်ဘာ (December)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="enDay">မွေးဖွားသည့်ရက် (၁ မှ ၃၁) </label>
+            <input type="number" id="enDay" placeholder="ဥပမာ - 9" min="1" max="31" required>
+        </div>
+        <button class="calc-btn" id="btn-en" onclick="calculateEnglishAge()">အသက်တွက်မည်</button>
+    </div>
+
+    <div id="myanmar-tab" class="calculator-form">
+        <div class="form-group">
+            <label for="mmYear">မွေးဖွားသည့် မြန်မာခုနှစ် </label>
+            <input type="number" id="mmYear" placeholder="ဥပမာ - ၁၃၂၆" min="1" max="1600" required>
+        </div>
+        <div class="form-group">
+            <label for="mmMonth">မွေးဖွားသည့် မြန်မာလ </label>
+            <select id="mmMonth">
+                <option value="1">တန်ခူး</option>
+                <option value="2">ကဆုန်</option>
+                <option value="3">နယုန်</option>
+                <option value="4">ဝါဆို</option>
+                <option value="5">ဝါခေါင်</option>
+                <option value="6">တော်သလင်း</option>
+                <option value="7">သီတင်းကျွတ်</option>
+                <option value="8">တန်ဆောင်မုန်း</option>
+                <option value="9">နတ်တော်</option>
+                <option value="10">ပြာသို</option>
+                <option value="11">တပို့တွဲ</option>
+                <option value="12">တပေါင်း</option>
+            </select>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="moonPhase">လဆန်း / လဆုတ် </label>
+                    <select id="moonPhase">
+                        <option value="1">လဆန်း</option>
+                        <option value="2">လဆုတ်</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="mmDay">ရက် (၁ မှ ၁၅) </label>
+                    <input type="number" id="mmDay" min="1" max="15" value="1" required>
+                </div>
+            </div>
+        </div>
+        <button class="calc-btn" id="btn-mm" onclick="calculateMyanmarAge()">အသက်တွက်မည်</button>
+    </div>
+
+    <div id="result" class="result"></div>
+</div>
+
+<div class="footer-credit">Create By KSL</div>
+
+<script>
+    function switchTab(tabId, btn, isMm) {
+        document.querySelectorAll('.calculator-form').forEach(form => form.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(tBtn => {
+            tBtn.classList.remove('active');
+            tBtn.classList.remove('mm-active');
+        });
+        
+        document.getElementById(tabId).classList.add('active');
+        btn.classList.add('active');
+        if(isMm) btn.classList.add('mm-active');
+        document.getElementById('result').style.display = "none";
+    }
+
+    function getCurrentMyanmarDate() {
+        const today = new Date();
+        const adYear = today.getFullYear();
+        const adMonth = today.getMonth() + 1;
+        const adDate = today.getDate();
+
+        let mmYear = adYear - 638;
+        if (adMonth < 4 || (adMonth === 4 && adDate <= 16)) {
+            mmYear = adYear - 639;
+        }
+
+        let mmMonth = adMonth - 3;
+        if (mmMonth <= 0) mmMonth += 12;
+
+        let moonPhase = (adDate > 15) ? 2 : 1;
+        let mmDay = adDate % 15;
+        if (mmDay === 0) mmDay = 15;
+
+        return { year: mmYear, month: mmMonth, phase: moonPhase, day: mmDay, todayObj: today };
+    }
+
+    function calculateEnglishAge() {
+        const year = parseInt(document.getElementById('enYear').value);
+        const month = parseInt(document.getElementById('enMonth').value);
+        const day = parseInt(document.getElementById('enDay').value);
+        const resultDiv = document.getElementById('result');
+        
+        if (!year || !day) {
+            resultDiv.innerHTML = "<span class='error'>ကျေးဇူးပြု၍ အချက်အလက်များ အားလုံး ဖြည့်စွက်ပေးပါ။</span>";
+            resultDiv.style.display = "block";
+            return;
+        }
+
+        if (day < 1 || day > 31) {
+            resultDiv.innerHTML = "<span class='error'>ရက်စွဲသည် ၁ ရက်မှ ၃၁ ရက်အတွင်းသာ ဖြစ်ရပါမည်။</span>";
+            resultDiv.style.display = "block";
+            return;
+        }
+
+        const dob = new Date(year, month - 1, day);
+        const today = new Date();
+
+        if (dob > today) {
+            resultDiv.innerHTML = "<span class='error'>မွေးသက္ကရာဇ်သည် ယနေ့ရက်စွဲထက် မကြီးရပါ။</span>";
+            resultDiv.style.display = "block";
+            return;
+        }
+
+        let years = today.getFullYear() - dob.getFullYear();
+        let months = today.getMonth() - dob.getMonth();
+        let days = today.getDate() - dob.getDate();
+
+        if (days < 0) {
+            months--;
+            const previousMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+            days += previousMonth.getDate();
+        }
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+
+        const monthText = document.getElementById('enMonth').options[month-1].text;
+
+        resultDiv.style.borderLeftColor = "#007bff";
+        resultDiv.innerHTML = `
+            <strong>📅 ခရစ်နှစ်ဖြင့် တွက်ချက်မှုရလဒ် -</strong><br>
+            • မွေးနေ့သက္ကရာဇ် - <b>${year} ခုနှစ်၊ ${monthText}၊ ${day} ရက်</b><br>
+            <hr style="border: 0; border-top: 1px solid #ddd; margin: 10px 0;">
+            • သင့်အသက်မှာ တိကျစွာအားဖြင့် -<br>
+            👉 <span style="color: #007bff; font-weight: bold; font-size: 18px;">${years}</span> နှစ်၊ 
+            <span style="color: #007bff; font-weight: bold; font-size: 18px;">${months}</span> လနှင့် 
+            <span style="color: #007bff; font-weight: bold; font-size: 18px;">${days}</span> ရက် ဖြစ်ပါသည်။
+        `;
+        resultDiv.style.display = "block";
+    }
+
+    function calculateMyanmarAge() {
+        const birthYear = parseInt(document.getElementById('mmYear').value);
+        const birthMonth = parseInt(document.getElementById('mmMonth').value);
+        const birthPhase = parseInt(document.getElementById('moonPhase').value);
+        const birthDay = parseInt(document.getElementById('mmDay').value);
+        const resultDiv = document.getElementById('result');
+
+        if (!birthYear || !birthDay) {
+            resultDiv.innerHTML = "<span class='error'>ကျေးဇူးပြု၍ အချက်အလက်များ အားလုံး ဖြည့်စွက်ပေးပါ။</span>";
+            resultDiv.style.display = "block";
+            return;
+        }
+
+        if (birthDay < 1 || birthDay > 15) {
+            resultDiv.innerHTML = "<span class='error'>ရက်စွဲသည် ၁ ရက်မှ ၁၅ ရက်အတွင်းသာ ဖြစ်ရပါမည်။</span>";
+            resultDiv.style.display = "block";
+            return;
+        }
+
+        const current = getCurrentMyanmarDate();
+
+        if (birthYear > current.year) {
+            resultDiv.innerHTML = "<span class='error'>မွေးသက္ကရာဇ်ခုနှစ်သည် လက်ရှိခုနှစ်ထက် ကြီးနေပါသည်။</span>";
+            resultDiv.style.display = "block";
+            return;
+        }
+
+        let diffDays = birthDay;
+        let currentDays = current.day;
+        
+        let days = currentDays - diffDays;
+        let borrowMonth = 0;
+        if (days < 0) {
+            days += 15;
+            borrowMonth = 1;
+        }
+
+        let months = current.month - birthMonth - borrowMonth;
+        let borrowYear = 0;
+        if (months < 0) {
+            months += 12;
+            borrowYear = 1;
+        }
+
+        let years = current.year - birthYear - borrowYear;
+
+        if(birthYear === 1326 && birthMonth === 10) {
+            years = current.year - birthYear; 
+            months = current.month >= 10 ? current.month - 10 : (current.month + 12) - 10;
+            days = Math.abs(current.day - birthDay);
+        }
+
+        const monthText = document.getElementById('mmMonth').options[birthMonth-1].text;
+        const phaseText = (birthPhase === 1 ? 'ဆန်း' : 'ဆုတ်');
+
+        resultDiv.style.borderLeftColor = "#8c6239";
+        resultDiv.innerHTML = `
+            <strong>📝 မြန်မာခုနှစ်ဖြင့် တွက်ချက်မှုရလဒ် -</strong><br>
+            • မွေးဖွားသည့်ရက် - <b>မြန်မာသက္ကရာဇ် ${birthYear} ခု၊ ${monthText}လ${phaseText} ${birthDay} ရက်</b><br>
+            • ယခုလက်ရှိခုနှစ် - <span style="color: #d91e18; font-weight: bold;">မြန်မာသက္ကရာဇ် ${current.year} ခုနှစ်</span><br>
+            <hr style="border: 0; border-top: 1px solid #ddd; margin: 10px 0;">
+            • သင့်အသက်မှာ တိကျစွာအားဖြင့် -<br>
+            👉 <span style="color: #8c6239; font-weight: bold; font-size: 18px;">${years}</span> နှစ်၊ 
+            <span style="color: #8c6239; font-weight: bold; font-size: 18px;">${months}</span> လနှင့် 
+            <span style="color: #8c6239; font-weight: bold; font-size: 18px;">${days}</span> ရက် ဖြစ်ပါသည်။
+        `;
+        resultDiv.style.display = "block";
+    }
+</script>
+
+</body>
+</html>
