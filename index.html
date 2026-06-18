@@ -123,10 +123,10 @@
             font-weight: bold;
         }
 
-        
+        /* အောက်ခြေ Modify By KSL စာသားအတွက် Style */
         .footer-credit {
             margin-top: 25px;
-            font-size: 18px;
+            font-size: 14px;
             color: #888;
             letter-spacing: 0.5px;
             font-weight: 500;
@@ -145,11 +145,11 @@
 
     <div id="english-tab" class="calculator-form active">
         <div class="form-group">
-            <label for="enYear">မွေးဖွားသည့် အင်္ဂလိပ်ခုနှစ် </label>
+            <label for="enYear">မွေးဖွားသည့် အင်္ဂလိပ်ခုနှစ် (A.D.) -</label>
             <input type="number" id="enYear" placeholder="ဥပမာ - 1994" min="1" max="2100" required>
         </div>
         <div class="form-group">
-            <label for="enMonth">မွေးဖွားသည့် အင်္ဂလိပ်လ </label>
+            <label for="enMonth">မွေးဖွားသည့် အင်္ဂလိပ်လ -</label>
             <select id="enMonth">
                 <option value="1">ဇန်နဝါရီ (January)</option>
                 <option value="2">ဖေဖော်ဝါရီ (February)</option>
@@ -166,7 +166,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="enDay">မွေးဖွားသည့်ရက် (၁ မှ ၃၁) </label>
+            <label for="enDay">မွေးဖွားသည့်ရက် (၁ မှ ၃၁) -</label>
             <input type="number" id="enDay" placeholder="ဥပမာ - 9" min="1" max="31" required>
         </div>
         <button class="calc-btn" id="btn-en" onclick="calculateEnglishAge()">အသက်တွက်မည်</button>
@@ -174,11 +174,11 @@
 
     <div id="myanmar-tab" class="calculator-form">
         <div class="form-group">
-            <label for="mmYear">မွေးဖွားသည့် မြန်မာခုနှစ် </label>
+            <label for="mmYear">မွေးဖွားသည့် မြန်မာခုနှစ် -</label>
             <input type="number" id="mmYear" placeholder="ဥပမာ - ၁၃၂၆" min="1" max="1600" required>
         </div>
         <div class="form-group">
-            <label for="mmMonth">မွေးဖွားသည့် မြန်မာလ </label>
+            <label for="mmMonth">မွေးဖွားသည့် မြန်မာလ -</label>
             <select id="mmMonth">
                 <option value="1">တန်ခူး</option>
                 <option value="2">ကဆုန်</option>
@@ -197,7 +197,7 @@
         <div class="row">
             <div class="col">
                 <div class="form-group">
-                    <label for="moonPhase">လဆန်း / လဆုတ် </label>
+                    <label for="moonPhase">လဆန်း / လဆုတ် -</label>
                     <select id="moonPhase">
                         <option value="1">လဆန်း</option>
                         <option value="2">လဆုတ်</option>
@@ -206,7 +206,7 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label for="mmDay">ရက် (၁ မှ ၁၅) </label>
+                    <label for="mmDay">ရက် (၁ မှ ၁၅) -</label>
                     <input type="number" id="mmDay" min="1" max="15" value="1" required>
                 </div>
             </div>
@@ -217,9 +217,51 @@
     <div id="result" class="result"></div>
 </div>
 
-<div class="footer-credit">## KSL ##</div>
+<div class="footer-credit">Modify by KSL</div>
 
 <script>
+    // ==========================================
+    // ⚙️ FORCE UPDATE SYSTEM CONFIGURATION
+    // ==========================================
+    // (အရေးကြီး) ၁။ App ကို Update ပေးချင်တဲ့အခါ ဒီ Version နံပါတ်ကို တိုးပေးရပါမယ် (ဥပမာ "1.0.1")
+    const CURRENT_VERSION = "1.0.0"; 
+    
+    // (အရေးကြီး) ၂။ မိမိ GitHub/Gist ပေါ်တင်ထားမယ့် version.json ရဲ့ RAW URL ကို ဒီအောက်က မျက်တောင်အဖွင့်အပိတ်ကြားမှာ လာထည့်ပေးပါ
+    const VERSION_CHECK_URL = "https://raw.githubusercontent.com/kaungsanlin/Age-Calculator-/refs/heads/main/version.json";
+
+    function checkAppUpdate() {
+        if(!VERSION_CHECK_URL || VERSION_CHECK_URL.includes("your-username")) return;
+        
+        fetch(VERSION_CHECK_URL)
+            .then(response => response.json())
+            .then(data => {
+                if (data.latestVersion !== CURRENT_VERSION) {
+                    showUpdateModal(data.message, data.updateUrl);
+                }
+            })
+            .catch(error => console.log("Update check skipped or failed:", error));
+    }
+
+    function showUpdateModal(message, updateUrl) {
+        const modalHtml = `
+            <div id="updateModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; display:flex; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
+                <div style="background:#fff; padding:25px; border-radius:12px; max-width:400px; width:100%; text-align:center; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
+                    <h3 style="color:#dc3545; margin-top:0; font-size:20px;">⚠️ အပ်ဒိတ်အသစ်ရရှိနိုင်ပါပြီ</h3>
+                    <p style="color:#4a4a4a; line-height:1.6; text-align:left; font-size:15px; margin-bottom:25px;">${message}</p>
+                    <button onclick="window.location.href='${updateUrl}'" style="width:100%; background:#28a745; color:#fff; padding:12px; border:none; border-radius:6px; font-size:16px; font-weight:bold; cursor:pointer;">
+                        ယခုပဲ အပ်ဒိတ်ရယူမည်
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }
+
+    window.addEventListener('DOMContentLoaded', checkAppUpdate);
+
+    // ==========================================
+    // 🧮 AGE CALCULATOR CORE LOGIC
+    // ==========================================
     function switchTab(tabId, btn, isMm) {
         document.querySelectorAll('.calculator-form').forEach(form => form.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(tBtn => {
@@ -251,7 +293,7 @@
         let mmDay = adDate % 15;
         if (mmDay === 0) mmDay = 15;
 
-        return { year: mmYear, month: mmMonth, phase: moonPhase, day: mmDay, todayObj: today };
+        return { year: mmYear, month: mmMonth, phase: moonPhase, day: mmDay };
     }
 
     function calculateEnglishAge() {
@@ -356,6 +398,7 @@
 
         let years = current.year - birthYear - borrowYear;
 
+        // Special Edge Case Handling (1326 ပြာသိုလဆန်း ၆ ရက်အတွက် တိကျစေရန်)
         if(birthYear === 1326 && birthMonth === 10) {
             years = current.year - birthYear; 
             months = current.month >= 10 ? current.month - 10 : (current.month + 12) - 10;
