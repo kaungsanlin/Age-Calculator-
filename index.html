@@ -224,7 +224,7 @@
     // ⚙️ FORCE UPDATE SYSTEM CONFIGURATION
     // ==========================================
     // (အရေးကြီး) ၁။ App ကို Update ပေးချင်တဲ့အခါ ဒီ Version နံပါတ်ကို တိုးပေးရပါမယ် (ဥပမာ "1.0.1")
-    const CURRENT_VERSION = "1.0.0"; 
+    const CURRENT_VERSION = "2.0"; 
     
     // (အရေးကြီး) ၂။ မိမိ GitHub/Gist ပေါ်တင်ထားမယ့် version.json ရဲ့ RAW URL ကို ဒီအောက်က မျက်တောင်အဖွင့်အပိတ်ကြားမှာ လာထည့်ပေးပါ
     const VERSION_CHECK_URL = "https://raw.githubusercontent.com/kaungsanlin/Age-Calculator-/refs/heads/main/version.json";
@@ -243,19 +243,21 @@
     }
 
     function showUpdateModal(message, updateUrl) {
-        const modalHtml = `
-            <div id="updateModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; display:flex; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
-                <div style="background:#fff; padding:25px; border-radius:12px; max-width:400px; width:100%; text-align:center; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
-                    <h3 style="color:#dc3545; margin-top:0; font-size:20px;">⚠️ အပ်ဒိတ်အသစ်ရရှိနိုင်ပါပြီ</h3>
-                    <p style="color:#4a4a4a; line-height:1.6; text-align:left; font-size:15px; margin-bottom:25px;">${message}</p>
-                    <button onclick="window.location.href='${https://drive.google.com/file/d/1_7Ts37Coo3uPMEt1vA81Ez7x83zTOgsY/view?usp=drivesdk}'" style="width:100%; background:#28a745; color:#fff; padding:12px; border:none; border-radius:6px; font-size:16px; font-weight:bold; cursor:pointer;">
-                        ယခုပဲ အပ်ဒိတ်ရယူမည်
-                    </button>
-                </div>
+    const modalHtml = `
+        <div id="updateModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; display:flex; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
+            <div style="background:#fff; padding:25px; border-radius:12px; max-width:400px; width:100%; text-align:center; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
+                <h3 style="color:#dc3545; margin-top:0; font-size:20px;">⚠️ အပ်ဒိတ်အသစ်ရရှိနိုင်ပါပြီ</h3>
+                <p style="color:#4a4a4a; line-height:1.6; text-align:left; font-size:15px; margin-bottom:25px;">${message}</p>
+                
+                <a href="${updateUrl}" target="_blank" style="display:block; text-decoration:none; width:100%; background:#28a745; color:#fff; padding:12px 0; border-radius:6px; font-size:16px; font-weight:bold; cursor:pointer; text-align:center;">
+                    ယခုပဲ အပ်ဒိတ်ရယူမည်
+                </a>
             </div>
-        `;
-        document.body.insertAdjacentHTML('beforeend', modalHtml);
-    }
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
 
     window.addEventListener('DOMContentLoaded', checkAppUpdate);
 
