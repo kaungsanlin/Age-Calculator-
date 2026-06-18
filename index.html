@@ -28,10 +28,37 @@
         h2 {
             text-align: center;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-size: 22px;
         }
-        /* Tab Styles */
+        
+        
+        .type-selector {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #4a5568;
+            cursor: pointer;
+        }
+        .radio-label input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #007bff;
+        }
+
         .tabs {
             display: flex;
             margin-bottom: 25px;
@@ -57,7 +84,6 @@
             color: #8c6239;
             border-bottom: 3px solid #8c6239;
         }
-        /* Form Styles */
         .calculator-form {
             display: none;
         }
@@ -106,30 +132,90 @@
         #btn-mm { background-color: #8c6239; }
         #btn-mm:hover { background-color: #6f4e2d; }
         
-        /* Result Style */
-        .result {
-            margin-top: 25px;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-left: 5px solid #28a745;
-            border-radius: 6px;
-            display: none;
-            line-height: 1.8;
-            text-align: left;
-            color: #333;
-        }
-        .error {
-            color: #dc3545;
-            font-weight: bold;
-        }
-
-        /* အောက်ခြေ Modify By KSL စာသားအတွက် Style */
         .footer-credit {
             margin-top: 25px;
-            font-size: 14px;
+            font-size: 25px;
             color: #888;
             letter-spacing: 0.5px;
             font-weight: 500;
+        }
+
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .modal-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: fadeIn 0.2s ease-out;
+        }
+        .modal-box h3 {
+            margin-top: 0;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .status-pass { color: #28a745; }
+        .status-fail { color: #dc3545; }
+        
+        .modal-box p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 22px;
+            text-align: left;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #ddd;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-yes {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-yes:hover { background-color: #218838; }
+        .btn-no {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-no:hover { background-color: #5a6268; }
+        .btn-ok {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-ok:hover { background-color: #0056b3; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
@@ -138,18 +224,29 @@
 <div class="container">
     <h2>Age Calculator</h2>
     
+    
+    <div class="type-selector">
+        <label class="radio-label">
+            <input type="radio" name="appType" value="new" checked> အသစ် (၁၈ - ၆၂)
+        </label>
+        <label class="radio-label">
+            <input type="radio" name="appType" value="old"> အဟောင်း (၁၈ - ၇၀)
+        </label>
+    </div>
+    
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('english-tab', this, false)">Eng ခုနှစ်ဖြင့် တွက်ရန်</button>
         <button class="tab-btn" onclick="switchTab('myanmar-tab', this, true)">မြန်မာခုနှစ်ဖြင့် တွက်ရန်</button>
     </div>
 
+    
     <div id="english-tab" class="calculator-form active">
         <div class="form-group">
-            <label for="enYear">မွေးဖွားသည့် အင်္ဂလိပ်ခုနှစ် (A.D.) -</label>
+            <label for="enYear">မွေးဖွားသည့် အင်္ဂလိပ်ခုနှစ် </label>
             <input type="number" id="enYear" placeholder="ဥပမာ - 1994" min="1" max="2100" required>
         </div>
         <div class="form-group">
-            <label for="enMonth">မွေးဖွားသည့် အင်္ဂလိပ်လ -</label>
+            <label for="enMonth">မွေးဖွားသည့် အင်္ဂလိပ်လ </label>
             <select id="enMonth">
                 <option value="1">ဇန်နဝါရီ (January)</option>
                 <option value="2">ဖေဖော်ဝါရီ (February)</option>
@@ -166,19 +263,20 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="enDay">မွေးဖွားသည့်ရက် (၁ မှ ၃၁) -</label>
+            <label for="enDay">မွေးဖွားသည့်ရက် (၁ မှ ၃၁)</label>
             <input type="number" id="enDay" placeholder="ဥပမာ - 9" min="1" max="31" required>
         </div>
         <button class="calc-btn" id="btn-en" onclick="calculateEnglishAge()">အသက်တွက်မည်</button>
     </div>
 
+    
     <div id="myanmar-tab" class="calculator-form">
         <div class="form-group">
-            <label for="mmYear">မွေးဖွားသည့် မြန်မာခုနှစ် -</label>
+            <label for="mmYear">မွေးဖွားသည့် မြန်မာခုနှစ်</label>
             <input type="number" id="mmYear" placeholder="ဥပမာ - ၁၃၂၆" min="1" max="1600" required>
         </div>
         <div class="form-group">
-            <label for="mmMonth">မွေးဖွားသည့် မြန်မာလ -</label>
+            <label for="mmMonth">မွေးဖွားသည့် မြန်မာလ</label>
             <select id="mmMonth">
                 <option value="1">တန်ခူး</option>
                 <option value="2">ကဆုန်</option>
@@ -206,32 +304,35 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label for="mmDay">ရက် (၁ မှ ၁၅) -</label>
+                    <label for="mmDay">ရက် (၁ မှ ၁၅) </label>
                     <input type="number" id="mmDay" min="1" max="15" value="1" required>
                 </div>
             </div>
         </div>
         <button class="calc-btn" id="btn-mm" onclick="calculateMyanmarAge()">အသက်တွက်မည်</button>
     </div>
-
-    <div id="result" class="result"></div>
 </div>
 
-<div class="footer-credit">Modify by KSL</div>
+
+<div id="ageModal" class="modal-overlay">
+    <div class="modal-box">
+        <h3 id="modalTitle"></h3>
+        <p id="modalText"></p>
+        <div id="modalButtons" class="modal-buttons"></div>
+    </div>
+</div>
+
+<div class="footer-credit">## by KSL ##</div>
 
 <script>
     // ==========================================
-    // ⚙️ FORCE UPDATE SYSTEM CONFIGURATION
+    // ⚙️ FORCE UPDATE SYSTEM
     // ==========================================
-    // (အရေးကြီး) ၁။ App ကို Update ပေးချင်တဲ့အခါ ဒီ Version နံပါတ်ကို တိုးပေးရပါမယ် (ဥပမာ "1.0.1")
-    const CURRENT_VERSION = "2.0"; 
-    
-    // (အရေးကြီး) ၂။ မိမိ GitHub/Gist ပေါ်တင်ထားမယ့် version.json ရဲ့ RAW URL ကို ဒီအောက်က မျက်တောင်အဖွင့်အပိတ်ကြားမှာ လာထည့်ပေးပါ
-    const VERSION_CHECK_URL = "https://raw.githubusercontent.com/kaungsanlin/Age-Calculator-/refs/heads/main/version.json";
+    const CURRENT_VERSION = "1.0"; 
+    const VERSION_CHECK_URL = "https://raw.githubusercontent.com/kaungsanlin/Age-Calculator-/main/version.json";
 
     function checkAppUpdate() {
         if(!VERSION_CHECK_URL || VERSION_CHECK_URL.includes("your-username")) return;
-        
         fetch(VERSION_CHECK_URL)
             .then(response => response.json())
             .then(data => {
@@ -239,42 +340,94 @@
                     showUpdateModal(data.message, data.updateUrl);
                 }
             })
-            .catch(error => console.log("Update check skipped or failed:", error));
+            .catch(error => console.log("Update check skipped:", error));
     }
 
     function showUpdateModal(message, updateUrl) {
-    const modalHtml = `
-        <div id="updateModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; display:flex; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
-            <div style="background:#fff; padding:25px; border-radius:12px; max-width:400px; width:100%; text-align:center; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
-                <h3 style="color:#dc3545; margin-top:0; font-size:20px;">⚠️ အပ်ဒိတ်အသစ်ရရှိနိုင်ပါပြီ</h3>
-                <p style="color:#4a4a4a; line-height:1.6; text-align:left; font-size:15px; margin-bottom:25px;">${message}</p>
-                
-                <a href="${updateUrl}" target="_blank" style="display:block; text-decoration:none; width:100%; background:#28a745; color:#fff; padding:12px 0; border-radius:6px; font-size:16px; font-weight:bold; cursor:pointer; text-align:center;">
-                    ယခုပဲ အပ်ဒိတ်ရယူမည်
-                </a>
+        const modalHtml = `
+            <div id="updateModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:99999; display:flex; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
+                <div style="background:#fff; padding:25px; border-radius:12px; max-width:400px; width:100%; text-align:center; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
+                    <h3 style="color:#dc3545; margin-top:0; font-size:20px;">⚠️ အပ်ဒိတ်အသစ်ရရှိနိုင်ပါပြီ</h3>
+                    <p style="color:#4a4a4a; line-height:1.6; text-align:left; font-size:15px; margin-bottom:25px;">${message}</p>
+                    <a href="${updateUrl}" target="_blank" style="display:block; text-decoration:none; width:100%; background:#28a745; color:#fff; padding:12px 0; border-radius:6px; font-size:16px; font-weight:bold; text-align:center;">ယခုပဲ အပ်ဒိတ်ရယူမည်</a>
+                </div>
             </div>
-        </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', modalHtml);
-}
-
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+    }
 
     window.addEventListener('DOMContentLoaded', checkAppUpdate);
 
     // ==========================================
-    // 🧮 AGE CALCULATOR CORE LOGIC
+    // 🛡️ DYNAMIC POPUP CONTROLLER WITH CUSTOM AGE LIMITS
     // ==========================================
+    function showSmartPopup(years, months, days, infoText) {
+        const modal = document.getElementById('ageModal');
+        const titleEl = document.getElementById('modalTitle');
+        const textEl = document.getElementById('modalText');
+        const buttonsEl = document.getElementById('modalButtons');
+        const boxEl = document.querySelector('.modal-box p');
+
+        
+        const selectedType = document.querySelector('input[name="appType"]:checked').value;
+        
+        
+        let maxAgeLimit = (selectedType === 'old') ? 70 : 62; 
+        let typeLabel = (selectedType === 'old') ? "အဟောင်း (၁၈ - ၇၀)" : "အသစ် (၁၈ - ၆၂)";
+
+        let ageResultHtml = `<b>📊 တွက်ချက်မှုရလဒ် [${typeLabel}] -</b><br>` + infoText + `<br>` +
+                            `• ယနေ့သက်တမ်း - <b>${years} နှစ်၊ ${months} လ၊ ${days} ရက်</b>`;
+
+        
+        if (years >= 18 && years <= maxAgeLimit) {
+            
+            titleEl.className = "status-pass";
+            titleEl.innerHTML = "🎉 အောင်မြင်ပါသည်";
+            boxEl.style.borderLeftColor = "#28a745";
+            textEl.innerHTML = ageResultHtml + `<hr style="border:0; border-top:1px dashed #ddd; margin:12px 0;"><span style="color:#1e3a8a; font-weight:bold;">MCIX  သို့ တိုက်ရိုက်သွားမလားခင်ဗျာ?</span>`;
+            
+            buttonsEl.innerHTML = `
+                <button class="modal-btn btn-yes" onclick="handlePopupChoice(true)">Yes (သွားမည်)</button>
+                <button class="modal-btn btn-no" onclick="handlePopupChoice(false)">No (ပိတ်မည်)</button>
+            `;
+        } 
+        else {
+            
+            titleEl.className = "status-fail";
+            boxEl.style.borderLeftColor = "#dc3545";
+            
+            if (years > maxAgeLimit) {
+                titleEl.innerHTML = `⚠️ Over Age (အသက် ${maxAgeLimit} နှစ်ကျော်လွန်နေပါသည်)`;
+            } else {
+                titleEl.innerHTML = "⚠️ Under Age (အသက် ၁၈ နှစ် မပြည့်သေးပါ)";
+            }
+            
+            textEl.innerHTML = ageResultHtml + `<hr style="border:0; border-top:1px dashed #ddd; margin:12px 0;"><span style="color:#dc3545; font-weight:bold;">သတ်မှတ်ထားသော အသက်ကန့်သတ်ချက် (၁၈ မှ ${maxAgeLimit} နှစ်) အတွင်း မရှိပါ။</span>`;
+            
+            buttonsEl.innerHTML = `
+                <button class="modal-btn btn-ok" onclick="handlePopupChoice(false)">OK (သိပါပြီ)</button>
+            `;
+        }
+
+        modal.style.display = 'flex';
+    }
+
+    function handlePopupChoice(goToMcix) {
+        document.getElementById('ageModal').style.display = 'none';
+        if (goToMcix) {
+            window.open("https://live.mcixportal.com/search/simple", "_blank");
+        }
+    }
+
     function switchTab(tabId, btn, isMm) {
         document.querySelectorAll('.calculator-form').forEach(form => form.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(tBtn => {
             tBtn.classList.remove('active');
             tBtn.classList.remove('mm-active');
         });
-        
         document.getElementById(tabId).classList.add('active');
         btn.classList.add('active');
         if(isMm) btn.classList.add('mm-active');
-        document.getElementById('result').style.display = "none";
     }
 
     function getCurrentMyanmarDate() {
@@ -282,53 +435,37 @@
         const adYear = today.getFullYear();
         const adMonth = today.getMonth() + 1;
         const adDate = today.getDate();
-
         let mmYear = adYear - 638;
-        if (adMonth < 4 || (adMonth === 4 && adDate <= 16)) {
-            mmYear = adYear - 639;
-        }
-
+        if (adMonth < 4 || (adMonth === 4 && adDate <= 16)) mmYear = adYear - 639;
         let mmMonth = adMonth - 3;
         if (mmMonth <= 0) mmMonth += 12;
-
         let moonPhase = (adDate > 15) ? 2 : 1;
         let mmDay = adDate % 15;
         if (mmDay === 0) mmDay = 15;
-
         return { year: mmYear, month: mmMonth, phase: moonPhase, day: mmDay };
     }
 
+    // ==================================//
+    // 🧮 AGE CALCULATOR PROCESSING               //
+    // ==================================//
     function calculateEnglishAge() {
         const year = parseInt(document.getElementById('enYear').value);
         const month = parseInt(document.getElementById('enMonth').value);
         const day = parseInt(document.getElementById('enDay').value);
-        const resultDiv = document.getElementById('result');
         
         if (!year || !day) {
-            resultDiv.innerHTML = "<span class='error'>ကျေးဇူးပြု၍ အချက်အလက်များ အားလုံး ဖြည့်စွက်ပေးပါ။</span>";
-            resultDiv.style.display = "block";
+            alert("ကျေးဇူးပြု၍ အချက်အလက်များ အားလုံး ဖြည့်စွက်ပေးပါ။");
             return;
         }
-
-        if (day < 1 || day > 31) {
-            resultDiv.innerHTML = "<span class='error'>ရက်စွဲသည် ၁ ရက်မှ ၃၁ ရက်အတွင်းသာ ဖြစ်ရပါမည်။</span>";
-            resultDiv.style.display = "block";
-            return;
-        }
-
         const dob = new Date(year, month - 1, day);
         const today = new Date();
-
         if (dob > today) {
-            resultDiv.innerHTML = "<span class='error'>မွေးသက္ကရာဇ်သည် ယနေ့ရက်စွဲထက် မကြီးရပါ။</span>";
-            resultDiv.style.display = "block";
+            alert("မွေးသက္ကရာဇ်သည် ယနေ့ရက်စွဲထက် မကြီးရပါ။");
             return;
         }
-
         let years = today.getFullYear() - dob.getFullYear();
         let months = today.getMonth() - dob.getMonth();
         let days = today.getDate() - dob.getDate();
-
         if (days < 0) {
             months--;
             const previousMonth = new Date(today.getFullYear(), today.getMonth(), 0);
@@ -338,20 +475,10 @@
             years--;
             months += 12;
         }
-
         const monthText = document.getElementById('enMonth').options[month-1].text;
-
-        resultDiv.style.borderLeftColor = "#007bff";
-        resultDiv.innerHTML = `
-            <strong>📅 ခရစ်နှစ်ဖြင့် တွက်ချက်မှုရလဒ် -</strong><br>
-            • မွေးနေ့သက္ကရာဇ် - <b>${year} ခုနှစ်၊ ${monthText}၊ ${day} ရက်</b><br>
-            <hr style="border: 0; border-top: 1px solid #ddd; margin: 10px 0;">
-            • သင့်အသက်မှာ တိကျစွာအားဖြင့် -<br>
-            👉 <span style="color: #007bff; font-weight: bold; font-size: 18px;">${years}</span> နှစ်၊ 
-            <span style="color: #007bff; font-weight: bold; font-size: 18px;">${months}</span> လနှင့် 
-            <span style="color: #007bff; font-weight: bold; font-size: 18px;">${days}</span> ရက် ဖြစ်ပါသည်။
-        `;
-        resultDiv.style.display = "block";
+        let infoText = `• မွေးသက္ကရာဇ် - <b>${year} ခုနှစ်၊ ${monthText}၊ ${day} ရက်</b>`;
+        
+        showSmartPopup(years, months, days, infoText);
     }
 
     function calculateMyanmarAge() {
@@ -359,69 +486,36 @@
         const birthMonth = parseInt(document.getElementById('mmMonth').value);
         const birthPhase = parseInt(document.getElementById('moonPhase').value);
         const birthDay = parseInt(document.getElementById('mmDay').value);
-        const resultDiv = document.getElementById('result');
-
-        if (!birthYear || !birthDay) {
-            resultDiv.innerHTML = "<span class='error'>ကျေးဇူးပြု၍ အချက်အလက်များ အားလုံး ဖြည့်စွက်ပေးပါ။</span>";
-            resultDiv.style.display = "block";
-            return;
-        }
-
-        if (birthDay < 1 || birthDay > 15) {
-            resultDiv.innerHTML = "<span class='error'>ရက်စွဲသည် ၁ ရက်မှ ၁၅ ရက်အတွင်းသာ ဖြစ်ရပါမည်။</span>";
-            resultDiv.style.display = "block";
-            return;
-        }
-
-        const current = getCurrentMyanmarDate();
-
-        if (birthYear > current.year) {
-            resultDiv.innerHTML = "<span class='error'>မွေးသက္ကရာဇ်ခုနှစ်သည် လက်ရှိခုနှစ်ထက် ကြီးနေပါသည်။</span>";
-            resultDiv.style.display = "block";
-            return;
-        }
-
-        let diffDays = birthDay;
-        let currentDays = current.day;
         
-        let days = currentDays - diffDays;
+        if (!birthYear || !birthDay) {
+            alert("ကျေးဇူးပြု၍ အချက်အလက်များ အားလုံး ဖြည့်စွက်ပေးပါ။");
+            return;
+        }
+        const current = getCurrentMyanmarDate();
+        if (birthYear > current.year) {
+            alert("မွေးသက္ကရာဇ်ခုနှစ်သည် လက်ရှိခုနှစ်ထက် ကြီးနေပါသည်။");
+            return;
+        }
+        let days = current.day - birthDay;
         let borrowMonth = 0;
         if (days < 0) {
             days += 15;
             borrowMonth = 1;
         }
-
         let months = current.month - birthMonth - borrowMonth;
         let borrowYear = 0;
         if (months < 0) {
             months += 12;
             borrowYear = 1;
         }
-
         let years = current.year - birthYear - borrowYear;
-
-        // Special Edge Case Handling (1326 ပြာသိုလဆန်း ၆ ရက်အတွက် တိကျစေရန်)
-        if(birthYear === 1326 && birthMonth === 10) {
-            years = current.year - birthYear; 
-            months = current.month >= 10 ? current.month - 10 : (current.month + 12) - 10;
-            days = Math.abs(current.day - birthDay);
-        }
-
         const monthText = document.getElementById('mmMonth').options[birthMonth-1].text;
         const phaseText = (birthPhase === 1 ? 'ဆန်း' : 'ဆုတ်');
+        
+        let infoText = `• မွေးသက္ကရာဇ် - <b>မြန်မာသက္ကရာဇ် ${birthYear} ခု၊ ${monthText}လ${phaseText} ${birthDay} ရက်</b><br>` +
+                       `• ယခုလက်ရှိ - <b>မြန်မာသက္ကရာဇ် ${current.year} ခုနှစ်</b>`;
 
-        resultDiv.style.borderLeftColor = "#8c6239";
-        resultDiv.innerHTML = `
-            <strong>📝 မြန်မာခုနှစ်ဖြင့် တွက်ချက်မှုရလဒ် -</strong><br>
-            • မွေးဖွားသည့်ရက် - <b>မြန်မာသက္ကရာဇ် ${birthYear} ခု၊ ${monthText}လ${phaseText} ${birthDay} ရက်</b><br>
-            • ယခုလက်ရှိခုနှစ် - <span style="color: #d91e18; font-weight: bold;">မြန်မာသက္ကရာဇ် ${current.year} ခုနှစ်</span><br>
-            <hr style="border: 0; border-top: 1px solid #ddd; margin: 10px 0;">
-            • သင့်အသက်မှာ တိကျစွာအားဖြင့် -<br>
-            👉 <span style="color: #8c6239; font-weight: bold; font-size: 18px;">${years}</span> နှစ်၊ 
-            <span style="color: #8c6239; font-weight: bold; font-size: 18px;">${months}</span> လနှင့် 
-            <span style="color: #8c6239; font-weight: bold; font-size: 18px;">${days}</span> ရက် ဖြစ်ပါသည်။
-        `;
-        resultDiv.style.display = "block";
+        showSmartPopup(years, months, days, infoText);
     }
 </script>
 
