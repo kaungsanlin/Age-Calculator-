@@ -333,7 +333,7 @@
 
     function checkAppUpdate() {
         if(!VERSION_CHECK_URL || VERSION_CHECK_URL.includes("your-username")) return;
-        fetch(VERSION_CHECK_URL)
+        const finalUrl = VERSION_CHECK_URL + "?v=" + new Date().getTime();
             .then(response => response.json())
             .then(data => {
                 if (data.latestVersion !== CURRENT_VERSION) {
