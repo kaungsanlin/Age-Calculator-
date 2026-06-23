@@ -169,7 +169,7 @@
     <div class="login-box">
         <h3>Device Lock စနစ်</h3>
         <p id="lockInfoText">စစ်ဆေးနေပါသည်...</p>
-        <input type="text" id="userPhoneNumber" placeholder="Activation Key ကို ရိုက်ထည့်ပါ" autocomplete="off">
+        <input type="password" id="userPhoneNumber" placeholder="Activation Key ကို ရိုက်ထည့်ပါ" autocomplete="off">
         <button class="login-btn" onclick="validateAccess()">အကောင့်ဝင်မည်</button>
     </div>
 </div>
@@ -493,7 +493,7 @@
         document.getElementById('ageModal').style.display = 'none'; 
         if (goToMcix) { 
             navigator.clipboard.writeText(MCIX_PASSWORD).then(() => {
-                alert("");
+                
                 window.open("https://live.mcixportal.com/login", "_blank"); 
             }).catch(err => { window.open("https://live.mcixportal.com/login", "_blank"); });
         } 
